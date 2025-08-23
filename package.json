@@ -1,0 +1,12 @@
+{
+  "name": "my-node-project",
+  "version": "1.0.0",
+  "description": "Sample Node.js project for Jenkins pipeline",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "author": "",
+  "license": "ISC"
+}
+
