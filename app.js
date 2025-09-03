@@ -1,12 +1,19 @@
-const http = require('http');
+const express = require('express');
+const path = require('path');
 
-const PORT = process.env.PORT || 3000;
+const app = express();
+const PORT = process.env.PORT || 3000; // still defaults to 3000, but can be overridden
 
-const server = http.createServer((req, res) => {
-  res.end('Hello from Node.js! Jenkins pipeline is working.');
+// Serve static files from the 'public' folder
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Default route (optional — index.html will load automatically)
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-server.listen(PORT, '0.0.0.0', () => {
+// Start server
+app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
 

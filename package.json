@@ -1,12 +1,15 @@
 {
-  "name": "my-node-project",
+  "name": "travelly-login",
   "version": "1.0.0",
-  "description": "Sample Node.js project for Jenkins pipeline",
+  "description": "A simple travel website login page with Jenkins and Docker support",
   "main": "app.js",
   "scripts": {
     "start": "node app.js"
   },
-  "author": "",
-  "license": "ISC"
+  "author": "Your Name",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
 }
 
