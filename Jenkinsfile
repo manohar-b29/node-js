@@ -23,7 +23,7 @@ pipeline {
             steps {
                 script {
                     sh """
-                        docker build -t $DOCKERHUB_USER/$IMAGE_NAME:latest .
+                        docker build -t ${DOCKERHUB_USER}/${IMAGE_NAME}:latest .
                     """
                 }
             }
@@ -34,7 +34,7 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'dockerhub_creds', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                     sh """
                         echo $PASSWORD | docker login -u $USERNAME --password-stdin
-                        docker push $DOCKERHUB_USER/$IMAGE_NAME:latest
+                        docker push ${DOCKERHUB_USER}/${IMAGE_NAME}:latest
                         docker logout
                     """
                 }
@@ -43,12 +43,12 @@ pipeline {
 
         stage('Run Container') {
             steps {
-                script {
+                
                     sh """
                         docker rm -f nodejs-container || true
-                        docker run -d --name nodejs-container -p 8043:8043 $DOCKERHUB_USER/$IMAGE_NAME:latest
+                        docker run -d --name nodejs-container -p 8043:8043 ${DOCKERHUB_USER}/${IMAGE_NAME}:latest
                     """
-                }
+                
             }
         }
     }
