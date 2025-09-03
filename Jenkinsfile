@@ -27,6 +27,6 @@ pipeline {
  post {
         success {
             echo 'Artifact created and stored in Jenkins.'
-        }
-    }
+        }
+    }
 }
