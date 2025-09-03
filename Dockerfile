@@ -8,6 +8,8 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install --production
 
+#env
+ENV PORT=8043
 # Copy all app files
 COPY . .
 
