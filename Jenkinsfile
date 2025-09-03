@@ -4,29 +4,52 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/manohar-b29/node-js.git'
+                git branch: 'feature', url: 'https://github.com/manohar-b29/node-js.git'
             }
         }
 
-        stage('Install') {
+        stage('Install Dependencies') {
             steps {
                 sh 'npm install'
             }
         }
 
-        stage('Create Artifact') {
+        stage('Build') {
             steps {
-                sh '''
-                  mkdir -p artifacts
-                  tar -czf artifacts/nodejs-app.tar.gz *
-                '''
-                archiveArtifacts artifacts: 'artifacts/*.tar.gz', fingerprint: true
+                sh 'npm run build'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                sh 'npm test'
+            }
+        }
+
+        stage('Docker Build & Push') {
+            steps {
+                sh 'docker build -t your-dockerhub-username/node-js-app .'
+                sh 'docker push your-dockerhub-username/node-js-app'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                echo 'Deploy stage (add your deployment steps here)'
             }
         }
     }
- post {
+
+    post {
+        always {
+            echo 'Pipeline finished.'
+        }
         success {
-            echo 'Artifact created and stored in Jenkins.'
-        }
-    }
+            echo 'Pipeline succeeded!'
+        }
+        failure {
+            echo 'Pipeline failed!'
+        }
+    }
 }
+
