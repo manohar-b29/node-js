@@ -21,11 +21,7 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                script {
-                    sh """
-                        docker build -t ${DOCKERHUB_USER}/${IMAGE_NAME}:latest .
-                    """
-                }
+                sh "sudo docker build -t ${DOCKERHUB_USER}/${IMAGE_NAME}:latest ."
             }
         }
 
@@ -33,9 +29,9 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'dockerhub_creds', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                     sh """
-                        echo $PASSWORD | docker login -u $USERNAME --password-stdin
-                        docker push ${DOCKERHUB_USER}/${IMAGE_NAME}:latest
-                        docker logout
+                        echo \$PASSWORD | sudo docker login -u \$USERNAME --password-stdin
+                        sudo docker push ${DOCKERHUB_USER}/${IMAGE_NAME}:latest
+                        sudo docker logout
                     """
                 }
             }
@@ -43,19 +39,11 @@ pipeline {
 
         stage('Run Container') {
             steps {
-                
-                    sh """
-                        docker rm -f nodejs-container || true
-                        docker run -d --name nodejs-container -p 8043:8043 ${DOCKERHUB_USER}/${IMAGE_NAME}:latest
-                    """
-                
+                sh """
+                    sudo docker rm -f nodejs-container || true
+                    sudo docker run -d --name nodejs-container -p 8043:8043 ${DOCKERHUB_USER}/${IMAGE_NAME}:latest
+                """
             }
-        }
-    }
-
-    post {
-        success {
-            echo 'Artifact created, Docker image pushed, and container running on port 8043.'
         }
     }
 }
